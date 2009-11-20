@@ -7,12 +7,12 @@ Date:    20 Nov 2009 License: MIT (attached)
 This is a simple script that aids in keeping all your local branches in
 sync with a namespaced refs folder.
 
-By default, a git repository serves its publics branches from refs/heads,
-but git allows you to push to any directory in the git repository. This
-allows you to backup all of your local branches to a "ref/<username>"
-directory, which gives the remote developer some redundancy (as all
-local branches are pushed), but without having to make them public and
-thus shared.
+By default, a git repository serves its public branches from
+refs/heads, but git also allows you to push to any directory in the
+git repository. This allows you to backup all of your local branches
+to a "ref/<username>" directory, which gives the remote developer some
+redundancy (as all local branches are pushed), but without having to
+make them public and shared.
 
 The script takes one argument: the remote ref directory.
 
