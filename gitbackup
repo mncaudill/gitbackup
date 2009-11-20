@@ -1,0 +1,37 @@
+#!/bin/bash
+
+remote=$(echo $1 | sed 's/\/*$//')
+
+if [ -z "$remote" ]; then
+    echo "You must enter in the backup path. Example: \"refs/username\""
+    exit
+fi
+
+# backup all refs
+echo "Pushing..."
+git push origin +refs/heads/*:$remote/*
+
+# remove old branches
+echo "Pruning..."
+local_branches=$(git for-each-ref refs/heads/ | cut -d '/' -f 3-)
+remote_branches=$(git ls-remote origin $remote/* | cut -d '/' -f 3-)
+
+local_file=$(mktemp)
+remote_file=$(mktemp)
+
+echo "$local_branches" > $local_file
+echo "$remote_branches" > $remote_file
+
+dead_remotes=$(comm -1 -3 $local_file $remote_file)
+
+if [ -z "$dead_remotes" ]; then
+    echo "Nothing to prune."
+fi
+
+rm $local_file $remote_file
+
+for branch in $dead_remotes;
+do
+    echo "Deleting remote branch: $branch"
+    git push origin :$remote/$branch
+done

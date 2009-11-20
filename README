@@ -1,0 +1,36 @@
+**************************************************
+Project: gitbackup
+Author:  Matthew Nolan Caudill (nolan@nolancaudill.com)
+Date:    20 Nov 2009 License: MIT (attached)
+**************************************************
+
+This is a simple script that aids in keeping all your local branches in
+sync with a namespaced refs folder.
+
+By default, a git repository serves its publics branches from refs/heads,
+but git allows you to push to any directory in the git repository. This
+allows you to backup all of your local branches to a "ref/<username>"
+directory, which gives the remote developer some redundancy (as all
+local branches are pushed), but without having to make them public and
+thus shared.
+
+The script takes one argument: the remote ref directory.
+
+An example, using myself would be:
+
+     gitbackup refs/mncaudill
+
+It first does a push of everything in the local refs/heads, to
+refs/mncaudill on the origin (origin by default, but plans to change
+this in the future), and then uses git's plumbing to get a list of all
+local branches, does a 'git ls-remote' to find all the pushed branches,
+finds any branches that exist remotely but not locally and removes them.
+
+One tip is to add an alias to your .bashrc to save typing. My .bashrc
+line looks like the following:
+
+    alias gitbackup="gitbackup refs/mncaudill"
+
+And please note the "AS-IS" portion of the MIT license. This works for
+me and it will probably work for you, but that's about all I can say
+about it.
